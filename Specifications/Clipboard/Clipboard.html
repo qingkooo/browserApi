@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Clipboard</title>
+  </head>
+  <body>
+    <header class="headbar">
+      <button onclick="javascript:history.back()">back</button>
+    </header>
+
+    <!-- 1 -->
+    <section class="feature">
+      <h3>readText和writeText方法</h3>
+      <p>
+        readText @returns{String}<br />
+        writeText @returns{Undefined}
+      </p>
+      <p>操作方式：点击按钮，查看接口写入文本和读取文本</p>
+      <div>
+        <button id="readText">readText</button>
+        <button id="writeText">writeText</button>
+      </div>
+      <div id="result1"></div>
+    </section>
+    <script>
+      {
+        const elm_read_text = document.querySelector("#readText");
+        const elm_write_text = document.querySelector("#writeText");
+        const elm_result1 = document.querySelector("#result1");
+        let count = 0;
+        elm_read_text.addEventListener("click", async (event) => {
+          navigator.clipboard
+            .readText()
+            .then((clipboardText) => {
+              console.log(clipboardText, typeof clipboardText);
+              elm_result1.innerHTML = "";
+              elm_result1.textContent = clipboardText;
+            })
+            .catch((event) => {
+              console.error(event);
+            });
+        });
+        elm_write_text.addEventListener("click", async (event) => {
+          navigator.clipboard
+            .writeText(count)
+            .then(() => {
+              console.log(`写入${count}`);
+              count++;
+            })
+            .catch((event) => {
+              console.error(event);
+            });
+        });
+      }
+    </script>
+
+    <!-- 2 -->
+    <section class="feature">
+      <h3>read方法</h3>
+      <p>
+        read @returns{ClipboardItem[]}<br />
+        write @returns{Undefined}
+      </p>
+      <p>操作方式：点击按钮，使用接口读取剪切板中的文本或者截屏</p>
+      <div>
+        <button id="read">read</button>
+      </div>
+      <div id="result2"></div>
+    </section>
+    <script type="module">
+      const elm_read_text = document.querySelector("#read");
+      const elm_result2 = document.querySelector("#result2");
+      elm_read_text.addEventListener("click", (event) => {
+        navigator.clipboard
+          .read()
+          .then((clipboardItems) => {
+            console.log(clipboardItems);
+            for (let clipboardItem of clipboardItems) {
+              const { types } = clipboardItem;
+              for (const type of types) {
+                clipboardItem.getType(type).then((blob) => {
+                  if (type === "image/png") {
+                    let elm_image = new Image();
+                    elm_image.onload = function () {
+                      elm_result2.innerHTML = "";
+                      elm_result2.appendChild(elm_image);
+                    };
+                    elm_image.src = URL.createObjectURL(blob);
+                  } else if (type === "text/plain") {
+                    blob.text().then((txt) => {
+                      elm_result2.innerHTML = "";
+                      elm_result2.textContent = txt;
+                    });
+                  }
+                });
+              }
+            }
+          })
+          .catch((event) => {
+            console.error(event);
+          });
+      });
+    </script>
+
+    <!-- 3 -->
+    <section>
+      <h3>write方法</h3>
+      <p>
+        Todo:涉及到各种各样的mime数据类型和blob类型的转换，比如image。暂时略过
+      </p>
+    </section>
+  </body>
+</html>

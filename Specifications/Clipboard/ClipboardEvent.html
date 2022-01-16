@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Event</title>
+  </head>
+  <body>
+    <header class="headbar">
+      <button onclick="javascript:history.back()">back</button>
+    </header>
+
+    <!-- 1 -->
+    <section class="feature">
+      <h3>UI操作，产生ClipboardEvent</h3>
+      <p>ClipboardEvent继承自Event</p>
+      <p>操作方式：使用系统快捷键(cmd+x/c/v)操作文本，然后观看控制台输出</p>
+      <div id="result1"></div>
+    </section>
+    <script>
+      document.addEventListener("cut", (e) => {
+        console.log("document的cut事件：");
+        console.log(e);
+      });
+      document.addEventListener("copy", (e) => {
+        console.log("document的copy事件");
+        console.log(e);
+      });
+      document.addEventListener("paste", (e) => {
+        console.log("document的paste事件");
+        console.log(e);
+        console.log(e.clipboardData.getData("image/png"))
+      });
+    </script>
+  </body>
+</html>
