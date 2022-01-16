@@ -1,0 +1,19 @@
+{
+  "name": "browserapi",
+  "version": "1.0.0",
+  "description": "browserApi整理&实践&方案",
+  "scripts": {
+    "clipboard": "http-server -o Specifications/Clipboard/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qingkooo/browserApi.git"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qingkooo/browserApi/issues"
+  },
+  "homepage": "https://github.com/qingkooo/browserApi#readme"
+}
