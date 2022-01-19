@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <button id="geoBtn">geoBtn</button>
+      <button id="revoke">revoke</button>
+    </div>
+    <script>
+      // 通用的示例
+      navigator.permissions
+        .query({ name: "microphone" })
+        .then(function (result) {
+          if (result.state == "granted") {
+          } else if (result.state == "prompt") {
+          } else if (result.state == "denied") {
+          }
+          result.onchange = function () {};
+        });
+    </script>
+    <script>
+      // 实际的例子
+      function handlePermission() {
+        navigator.permissions
+          .query({ name: "geolocation" })
+          .then(function (result) {
+            if (result.state == "granted") {
+              report(result.state);
+              geoBtn.style.display = "none";
+            } else if (result.state == "prompt") {
+              report(result.state);
+              geoBtn.style.display = "none";
+              // TODO:
+            } else if (result.state == "denied") {
+              report(result.state);
+              geoBtn.style.display = "inline";
+            }
+            result.onchange = function () {
+              report(result.state);
+            };
+          });
+      }
+      // revoke:撤销权限至默认设置
+      // 兼容性：仅firefox支持
+      function revokePermission() {
+        navigator.permissions
+          .revoke({ name: "geolocation" })
+          .then(function (result) {
+            report(result.state);
+          });
+      }
+      function report(state) {
+        console.log("Permission " + state);
+      }
+      var revokeBtn = document.querySelector("#revoke");
+      revokeBtn.onclick = function () {
+        revokePermission();
+      };
+
+      handlePermission();
+    </script>
+  </body>
+</html>
